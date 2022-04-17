@@ -16,7 +16,7 @@ public class FormTests {
 
     @AfterAll
     static void setDown() {
-        //Configuration.holdBrowserOpen = false;
+        Configuration.holdBrowserOpen = false;
     }
 
     @Test
