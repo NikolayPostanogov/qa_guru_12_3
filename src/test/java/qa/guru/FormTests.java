@@ -4,8 +4,7 @@ import org.junit.jupiter.api.*;
 import com.codeborne.selenide.Configuration;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
 
 public class FormTests {
     @BeforeAll
@@ -17,7 +16,7 @@ public class FormTests {
 
     @AfterAll
     static void setDown() {
-        Configuration.holdBrowserOpen = false;
+        //Configuration.holdBrowserOpen = false;
     }
 
     @Test
@@ -30,7 +29,7 @@ public class FormTests {
         String year = "2000";
         String month = "May";
         String day = "17"; //в формате mm
-        String subject = "123";
+        String subject = "Maths";
         String address = "somestreet 1";
         String hobby = "Sports";
         String imgName = "img.png";
@@ -39,6 +38,10 @@ public class FormTests {
         String city = "Delhi";
 
         open("/automation-practice-form");
+        $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
+        executeJavaScript("$('footer').remove()");
+        executeJavaScript("$('#fixedban').remove()");
+
         $("#firstName").setValue(firstName);
         $("#lastName").setValue(lastName);
         $("#userEmail").setValue(email);
@@ -47,18 +50,20 @@ public class FormTests {
         $("#dateOfBirthInput").click();
         $(".react-datepicker__month-select").selectOption(month);
         $(".react-datepicker__year-select").selectOption(year);
-        $(".react-datepicker__day--0"+day).click();
-        $("#subjectsInput").setValue(subject); //при снятии выделения поле очищается
+        $(".react-datepicker__day--0"+day+":not(react-datepicker__day--outside-month)").click();
+        $("#subjectsInput").setValue(subject).pressEnter();
         $("#currentAddress").setValue(address);
         $("#hobbiesWrapper").$(byText(hobby)).click();
         $("#uploadPicture").uploadFromClasspath(imgPath);
         $("#state").click();
-        $(byText(state)).click();
+        $("#stateCity-wrapper").$(byText(state)).click();
         $("#city").click();
-        $(byText(city)).click();
+        $("#stateCity-wrapper").$(byText(city)).click();
         $("#submit").click();
 
+        $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
         $(".modal-body").shouldHave(
+
                 text(firstName + " " + lastName),
                 text(email),
                 text(gender),
