@@ -34,7 +34,7 @@ public class RegistrationFormWithFakerTests {
             city = "Delhi";
 
     String expectedFullName = format("%s %s", firstName, lastName);
-    String expectedDate = format("%s %s,%s",day,month,year);
+    String expectedDate = format("%s %s,%s", day, month, year);
 
     @BeforeAll
     static void setUp() {
@@ -63,7 +63,7 @@ public class RegistrationFormWithFakerTests {
         $("#dateOfBirthInput").click();
         $(".react-datepicker__month-select").selectOption(month);
         $(".react-datepicker__year-select").selectOption(year);
-        $(".react-datepicker__day--0"+day+":not(react-datepicker__day--outside-month)").click();
+        $(".react-datepicker__day--0" + day + ":not(react-datepicker__day--outside-month)").click();
         $("#subjectsInput").setValue(subject).pressEnter();
         $("#currentAddress").setValue(address);
         $("#hobbiesWrapper").$(byText(hobby)).click();
