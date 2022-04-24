@@ -1,12 +1,33 @@
-package qa.guru;
+package qa.guru.tests;
 
 import org.junit.jupiter.api.*;
 import com.codeborne.selenide.Configuration;
 import static com.codeborne.selenide.Condition.text;
 import static com.codeborne.selenide.Selectors.byText;
 import static com.codeborne.selenide.Selenide.*;
+import static java.lang.String.format;
+import static qa.guru.utils.RandomUtils.*;
 
-public class FormTests {
+public class RegistrationFormWithRandomUtilsTests {
+    String firstName = getRandomString(10),
+            lastName = getRandomString(10),
+            email = getRandomEmail(),
+            gender = "Male",
+            phoneNumber = "0000000000",
+            year = "2000",
+            month = "May",
+            day = "17", //в формате mm
+            subject = "Maths",
+            address = "somestreet 1",
+            hobby = "Sports",
+            imgName = "img.png",
+            imgPath = "img/" + imgName,
+            state = "NCR",
+            city = "Delhi";
+
+    String expectedFullName = format("%s %s", firstName, lastName);
+    String expectedDate = format("%s %s,%s",day,month,year);
+
     @BeforeAll
     static void setUp() {
         Configuration.holdBrowserOpen = true;
@@ -21,22 +42,6 @@ public class FormTests {
 
     @Test
     void formTests() {
-        String firstName = "Alex";
-        String lastName = "Egorov";
-        String email = "alex_e@tst.com";
-        String gender = "Male";
-        String phoneNumber = "0000000000";
-        String year = "2000";
-        String month = "May";
-        String day = "17"; //в формате mm
-        String subject = "Maths";
-        String address = "somestreet 1";
-        String hobby = "Sports";
-        String imgName = "img.png";
-        String imgPath = "img/" + imgName;
-        String state = "NCR";
-        String city = "Delhi";
-
         open("/automation-practice-form");
         $(".practice-form-wrapper").shouldHave(text("Student Registration Form"));
         executeJavaScript("$('footer').remove()");
@@ -64,11 +69,11 @@ public class FormTests {
         $("#example-modal-sizes-title-lg").shouldHave(text("Thanks for submitting the form"));
         $(".modal-body").shouldHave(
 
-                text(firstName + " " + lastName),
+                text(expectedFullName),
                 text(email),
                 text(gender),
                 text(phoneNumber),
-                text(day + " " + month + "," + year),
+                text(expectedDate),
                 text(subject),
                 text(hobby),
                 text(imgName),
